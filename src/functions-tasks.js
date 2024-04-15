@@ -18,7 +18,7 @@
  *
  */
 function getCurrentFunctionName() {
-  throw new Error('Not implemented');
+  return getCurrentFunctionName.name;
 }
 
 /**
@@ -32,8 +32,21 @@ function getCurrentFunctionName() {
  *   getFunctionBody(hiHello) => "function hiHello() { console.log('hello world'); }"
  *
  */
-function getFunctionBody(/* func */) {
-  throw new Error('Not implemented');
+function getFunctionBody(func) {
+  if (typeof func !== 'function') {
+    return '';
+  }
+  function removeCommentsFromSource(str) {
+    return str.replace(
+      /(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm,
+      '$1'
+    );
+  }
+  const bodyFunc = removeCommentsFromSource(func.toString());
+  return bodyFunc.substring(
+    bodyFunc.indexOf('f'),
+    bodyFunc.lastIndexOf('}') + 1
+  );
 }
 
 /**
